@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Http\\Controllers\\Auth\\VerifyEmailController' => $baseDir . '/app/Http/Controllers/Auth/VerifyEmailController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\StudentController' => $baseDir . '/app/Http/Controllers/StudentController.php',
     'App\\Livewire\\Actions\\Logout' => $baseDir . '/app/Livewire/Actions/Logout.php',
     'App\\Livewire\\Auth\\ConfirmPassword' => $baseDir . '/app/Livewire/Auth/ConfirmPassword.php',
     'App\\Livewire\\Auth\\ForgotPassword' => $baseDir . '/app/Livewire/Auth/ForgotPassword.php',
@@ -19,6 +20,7 @@ return array(
     'App\\Livewire\\Settings\\DeleteUserForm' => $baseDir . '/app/Livewire/Settings/DeleteUserForm.php',
     'App\\Livewire\\Settings\\Password' => $baseDir . '/app/Livewire/Settings/Password.php',
     'App\\Livewire\\Settings\\Profile' => $baseDir . '/app/Livewire/Settings/Profile.php',
+    'App\\Models\\Student' => $baseDir . '/app/Models/Student.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
