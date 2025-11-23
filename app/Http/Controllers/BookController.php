@@ -18,15 +18,20 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        // Prepare data - convert empty ISBN to null
+        $data = $request->all();
+        $data['isbn'] = !empty($data['isbn']) && trim($data['isbn']) !== '' ? trim($data['isbn']) : null;
+        $data['description'] = null; // Description not required in add form
+
+        $validated = validator($data, [
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'isbn' => 'nullable|string|max:255|unique:books,isbn',
-            'category_id' => 'nullable|exists:categories,id',
-            'published_date' => 'nullable|date',
+            'category_id' => 'required|exists:categories,id',
+            'published_date' => 'required|date',
             'quantity' => 'required|integer|min:0',
             'description' => 'nullable|string',
-        ]);
+        ])->validate();
 
         Book::create($validated);
 
