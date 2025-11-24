@@ -24,7 +24,21 @@ class BookController extends Controller
         $data['description'] = null; // Description not required in add form
 
         $validated = validator($data, [
-            'title' => 'required|string|max:255',
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) use ($request) {
+                    // Check if book with same title and author already exists (case-insensitive)
+                    $existingBook = Book::whereRaw('LOWER(title) = LOWER(?)', [$value])
+                        ->whereRaw('LOWER(author) = LOWER(?)', [$request->author])
+                        ->first();
+                    
+                    if ($existingBook) {
+                        $fail('This book already exists in the library. A book with the same title and author cannot be added.');
+                    }
+                },
+            ],
             'author' => 'required|string|max:255',
             'isbn' => 'nullable|string|max:255|unique:books,isbn',
             'category_id' => 'required|exists:categories,id',
@@ -41,7 +55,22 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) use ($request, $book) {
+                    // Check if book with same title and author already exists (excluding current book, case-insensitive)
+                    $existingBook = Book::whereRaw('LOWER(title) = LOWER(?)', [$value])
+                        ->whereRaw('LOWER(author) = LOWER(?)', [$request->author])
+                        ->where('id', '!=', $book->id)
+                        ->first();
+                    
+                    if ($existingBook) {
+                        $fail('This book already exists in the library. A book with the same title and author cannot be added.');
+                    }
+                },
+            ],
             'author' => 'required|string|max:255',
             'isbn' => 'nullable|string|max:255|unique:books,isbn,' . $book->id,
             'category_id' => 'required|exists:categories,id',
