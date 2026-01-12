@@ -217,12 +217,32 @@ select:focus[data-flux-control] {
 
     /* Enhanced Modal with Glass Morphism */
     .modal-overlay {
-        @apply fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md transition-all duration-300;
+        @apply fixed inset-0 z-50 flex items-start justify-center bg-black/70 backdrop-blur-md transition-all duration-300 p-4;
+        overflow-y: auto;
     }
 
     .modal-content {
-        @apply relative w-full max-w-2xl rounded-2xl border border-neutral-200/80 bg-white/95 backdrop-blur-xl p-8 shadow-2xl shadow-neutral-900/50 transition-all duration-500 dark:border-neutral-700/50 dark:bg-neutral-800/95;
+        @apply relative w-full max-w-4xl rounded-2xl border border-neutral-200/80 bg-white/95 backdrop-blur-xl p-6 shadow-2xl shadow-neutral-900/50 transition-all duration-500 dark:border-neutral-700/50 dark:bg-neutral-800/95 my-4;
         animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (min-width: 768px) {
+        .modal-overlay {
+            @apply items-center;
+        }
+        
+        .modal-content {
+            @apply p-8 my-0;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .modal-content {
+            @apply rounded-xl p-5;
+            max-height: calc(100vh - 2rem);
+        }
     }
 
     @keyframes modalSlideIn {

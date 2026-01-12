@@ -14,7 +14,7 @@
             </div>
         @endif
 
-        <!-- Category Management Section -->
+        <!-- Genries Management Section -->
         <div class="section-card relative overflow-hidden">
             <div class="p-6">
                 <div class="mb-6 flex items-center gap-3">
@@ -23,19 +23,19 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                         </svg>
                     </div>
-                    <h2 class="text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Category Management</h2>
+                    <h2 class="text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Genres Management</h2>
                 </div>
                 
-                <!-- Add New Category Form -->
+                <!-- Add New Genries Form -->
                 <div class="form-section mb-8">
-                    <h3 class="mb-4 text-base font-semibold text-neutral-900 dark:text-neutral-100">Add New Category</h3>
+                    <h3 class="mb-4 text-base font-semibold text-neutral-900 dark:text-neutral-100">Add New Genres</h3>
                     
                     <form action="{{ route('categories.store') }}" method="POST" class="grid gap-4 md:grid-cols-2">
                         @csrf
 
                         <div>
                             <label class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">Name</label>
-                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Enter category name" required class="form-input">
+                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Enter  name" required class="form-input">
                             @error('name')
                                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                             @enderror
@@ -51,13 +51,13 @@
 
                         <div class="md:col-span-2">
                             <button type="submit" class="btn-success">
-                                Add Category
+                                Add Genres
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Categories List Table -->
+                <!-- Genries List Table -->
                 <div class="table-container overflow-x-auto">
                     <table class="w-full min-w-full">
                         <thead>
@@ -77,7 +77,7 @@
                                 <td class="px-4 py-3 text-sm text-neutral-600 dark:text-neutral-400">{{ $category->description ?? 'N/A' }}</td>
                                 <td class="px-4 py-3 text-sm text-neutral-600 dark:text-neutral-400">{{ $category->books_count }} books</td>
                                 <td class="px-4 py-3 text-sm">
-                                    <button onclick="openEditModal({{ $category->id }}, '{{ $category->name }}', '{{ $category->description ?? '' }}')" class="action-link action-link-edit">Edit</button>
+                                    <button onclick="openEditModal({{ $category->id }}, {{ json_encode($category->name) }}, {{ json_encode($category->description ?? '') }})" class="action-link action-link-edit">Edit</button>
                                     <span class="mx-1 text-neutral-400">|</span>
                                     <form action="{{ route('categories.destroy', $category) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this category?');">
                                         @csrf
@@ -88,7 +88,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-3 text-center text-sm text-neutral-600 dark:text-neutral-400">No categories found.</td>
+                                <td colspan="5" class="px-4 py-3 text-center text-sm text-neutral-600 dark:text-neutral-400">No genre found.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <!-- Edit Category Modal -->
+    <!-- Edit Genre Modal -->
     <div id="editCategoryModal" class="modal-overlay hidden">
         <div class="modal-content max-w-md">
             <button onclick="closeEditModal()" class="absolute right-4 top-4 text-neutral-400 transition-colors hover:text-neutral-600 dark:hover:text-neutral-300">
@@ -113,7 +113,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Edit Category</h3>
+                <h3 class="text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Edit Genre</h3>
             </div>
 
             <form id="editCategoryForm" method="POST" class="space-y-5">

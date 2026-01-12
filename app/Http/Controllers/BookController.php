@@ -5,12 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::with('category')->latest()->get();
+        $query = Book::with('category');
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('author', 'like', "%{$search}%")
+                  ->orWhere('isbn', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by category
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $books = $query->latest()->get();
         $categories = Category::withCount('books')->get();
 
         return view('dashboard', compact('books', 'categories'));
@@ -45,7 +64,15 @@ class BookController extends Controller
             'published_date' => 'required|date',
             'quantity' => 'required|integer|min:0',
             'description' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ])->validate();
+
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $photoPath = $photo->store('books', 'public');
+            $validated['photo'] = $photoPath;
+        }
 
         Book::create($validated);
 
@@ -77,7 +104,28 @@ class BookController extends Controller
             'published_date' => 'nullable|date',
             'quantity' => 'required|integer|min:0',
             'description' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
+
+        // Handle photo upload (takes precedence over removal)
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($book->photo && Storage::disk('public')->exists($book->photo)) {
+                Storage::disk('public')->delete($book->photo);
+            }
+            
+            $photo = $request->file('photo');
+            $photoPath = $photo->store('books', 'public');
+            $validated['photo'] = $photoPath;
+        }
+        // Handle photo removal (only if no new photo was uploaded)
+        elseif ($request->has('remove_photo') && $request->remove_photo == '1') {
+            // Delete old photo if exists
+            if ($book->photo && Storage::disk('public')->exists($book->photo)) {
+                Storage::disk('public')->delete($book->photo);
+            }
+            $validated['photo'] = null;
+        }
 
         $book->update($validated);
 
@@ -86,8 +134,35 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
-        $book->delete();
+        $book->delete(); // Soft delete
 
-        return redirect()->back()->with('success', 'Book deleted successfully.');
+        return redirect()->back()->with('success', 'Book moved to trash successfully.');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $query = Book::with('category');
+
+        // Apply same filters as index
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('author', 'like', "%{$search}%")
+                  ->orWhere('isbn', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $books = $query->latest()->get();
+
+        $pdf = Pdf::loadView('pdf.books', compact('books'));
+        
+        $filename = 'books_export_' . date('Y-m-d_His') . '.pdf';
+        
+        return $pdf->download($filename);
     }
 }
