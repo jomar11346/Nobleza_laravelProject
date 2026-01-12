@@ -522,7 +522,7 @@
         const successMessage = document.getElementById('successMessage');
         if (successMessage) {
             setTimeout(function() {
-                successMessage.style.transition = 'opacity 0.5s ease-out';
+                successMessage.style.transition = 'opacity 0.3s ease-out';
                 successMessage.style.opacity = '0';
                 setTimeout(function() {
                     successMessage.style.display = 'none';

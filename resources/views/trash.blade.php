@@ -3,7 +3,7 @@
 
         <!-- Success/Error Messages -->
         @if (session('success'))
-            <div class="alert-success" role="alert">
+            <div id="successMessage" class="alert-success" role="alert">
                 {{ session('success') }}
             </div>
         @endif
@@ -64,14 +64,14 @@
                                         <span class="text-neutral-400">N/A</span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-3 text-sm text-neutral-600 dark:text-neutral-400">{{ $book->deleted_at ? $book->deleted_at->format('Y-m-d H:i') : 'N/A' }}</td>
+                                <td class="px-4 py-3 text-sm text-neutral-600 dark:text-neutral-400">{{ $book->deleted_at ? $book->deleted_at->setTimezone('Asia/Manila')->format('Y-m-d h:i A') : 'N/A' }}</td>
                                 <td class="px-4 py-3 text-sm">
                                     <form action="{{ route('trash.restore', $book->id) }}" method="POST" class="inline">
                                         @csrf
                                         <button type="submit" class="action-link action-link-edit">Restore</button>
                                     </form>
-                                    <span class="mx-1 text-neutral-400">|</span>
-                                    <form action="{{ route('trash.force-delete', $book->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to permanently delete this book? This action cannot be undone.');">
+                                     <span class="mx-1 text-neutral-400">|</span>
+                                    <form action="{{ route('trash.force-delete', $book->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to permanently delete this book?.');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="action-link action-link-delete">Delete Permanently</button>
@@ -89,6 +89,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Hide success message after 5 seconds
+        const successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            setTimeout(function() {
+                successMessage.style.transition = 'opacity 0.3s ease-out';
+                successMessage.style.opacity = '0';
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 500);
+            }, 5000);
+        }
+    </script>
 </x-layouts.app>
-
-
