@@ -665,6 +665,7 @@ class ComposerStaticInit9929ae0f39b99702c171f9c9695fdcb9
         'App\\Http\\Controllers\\BookController' => __DIR__ . '/../..' . '/app/Http/Controllers/BookController.php',
         'App\\Http\\Controllers\\CategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/CategoryController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\TrashController' => __DIR__ . '/../..' . '/app/Http/Controllers/TrashController.php',
         'App\\Livewire\\Actions\\Logout' => __DIR__ . '/../..' . '/app/Livewire/Actions/Logout.php',
         'App\\Livewire\\Auth\\ConfirmPassword' => __DIR__ . '/../..' . '/app/Livewire/Auth/ConfirmPassword.php',
         'App\\Livewire\\Auth\\ForgotPassword' => __DIR__ . '/../..' . '/app/Livewire/Auth/ForgotPassword.php',

@@ -10,6 +10,7 @@ return array(
     'App\\Http\\Controllers\\BookController' => $baseDir . '/app/Http/Controllers/BookController.php',
     'App\\Http\\Controllers\\CategoryController' => $baseDir . '/app/Http/Controllers/CategoryController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\TrashController' => $baseDir . '/app/Http/Controllers/TrashController.php',
     'App\\Livewire\\Actions\\Logout' => $baseDir . '/app/Livewire/Actions/Logout.php',
     'App\\Livewire\\Auth\\ConfirmPassword' => $baseDir . '/app/Livewire/Auth/ConfirmPassword.php',
     'App\\Livewire\\Auth\\ForgotPassword' => $baseDir . '/app/Livewire/Auth/ForgotPassword.php',

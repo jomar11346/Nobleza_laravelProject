@@ -278,7 +278,7 @@
                                     </td>
                                     <td class="px-4 py-4">
                                         <div class="flex items-center gap-2">
-                                            <button onclick="openEditBookModal({{ $book->id }}, '{{ addslashes($book->title) }}', '{{ addslashes($book->author) }}', '{{ $book->isbn ?? '' }}', {{ $book->category_id ?? 'null' }}, '{{ $book->published_date ? $book->published_date->format('Y-m-d') : '' }}', {{ $book->quantity }}, '{{ addslashes($book->description ?? '') }}', '{{ $book->photo ?? '' }}')" class="action-link action-link-edit flex items-center gap-1">
+                                            <button onclick="openEditBookModal({{ $book->id }}, '{{ addslashes($book->title) }}', '{{ addslashes($book->author) }}', '{{ $book->isbn ?? '' }}', {{ $book->category_id ?? 'null' }}, '{{ $book->published_date ? $book->published_date->format('Y-m-d') : '' }}', {{ $book->quantity }}, '{{ addslashes($book->description ?? '') }}', '{{ $book->photo ? addslashes(asset('storage/' . $book->photo)) : '' }}')" class="action-link action-link-edit flex items-center gap-1">
                                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
@@ -460,7 +460,7 @@
                     <div class="mb-2">
                         <span class="text-xs font-medium text-neutral-600 dark:text-neutral-400 mb-2 block">Current photo:</span>
                         <div class="relative inline-block">
-                            <img src="/storage/${photo}" alt="Current photo" class="h-24 w-24 rounded-lg object-cover shadow-md ring-2 ring-neutral-200 dark:ring-neutral-700" id="current_photo_preview">
+                            <img src="${photo}" alt="Current photo" class="h-24 w-24 rounded-lg object-cover shadow-md ring-2 ring-neutral-200 dark:ring-neutral-700" id="current_photo_preview">
                             <button type="button" onclick="removeBookPhoto()" class="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white shadow-lg transition-all hover:bg-red-600 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-800" title="Remove photo">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

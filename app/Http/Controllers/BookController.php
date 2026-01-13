@@ -161,7 +161,7 @@ class BookController extends Controller
 
         $pdf = Pdf::loadView('pdf.books', compact('books'));
         
-        $filename = 'books_export_' . date('Y-m-d_His') . '.pdf';
+        $filename = 'The Book Lists_' . date('Y-m-d_His') . '.pdf';
         
         return $pdf->download($filename);
     }
